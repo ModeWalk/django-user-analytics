@@ -1,41 +1,33 @@
-#from django.db import models
-from utils import TwoWayDic
-from django.contrib.auth.signals import user_logged_in, user_logged_out
-from tracking import register_event, set_warning
+from django.db import models
+#from utils import TwoWayDic
+#from django.contrib.auth.signals import user_logged_in, user_logged_out
+#from user_analytics.tracking import register_event, set_warning
 
-TrackingEvent = TwoWayDic({
-    'COOKIE_SET' : 1,
-    'USER_LOGGED_IN': 2,
-    'USER_LOGGED_OUT' : 3,
-    'PAGE_VISITED' : 4
-})
+#TrackingEvent = TwoWayDic({
+#    'COOKIE_SET' : 1,
+#    'USER_LOGGED_IN': 2,
+#    'USER_LOGGED_OUT' : 3,
+#    'PAGE_VISITED' : 4
+#})
+
+class TrackingEvent:
+    COOKIE_SET = 1
+    USER_LOGGED_IN = 2
+    USER_LOGGED_OUT = 3
+    PAGE_VISITED = 4
+
+    TRACKING_EVENT_CHOICES = (
+        (COOKIE_SET, 'Cookie Set'),
+        (USER_LOGGED_IN, 'User Logged In'),
+        (USER_LOGGED_OUT, 'User Logged Out'),
+        (PAGE_VISITED, 'Page visited'),
+    )
 
 
-def register_user_logged_in(sender, request, user, **kwargs):
-    """
-    A signal receiver which triggers USER_LOGGED_IN
-    """
+class TrackedUser(models.Model):
+    cookie = models.TextField(blank=True,null=True)
+    user_agent = models.TextField(blank=True,null=True)
 
-    if 'tr_user' in request.COOKIES:
-        tracked_user = request.COOKIES[ 'tr_user' ]
-        register_event(tracked_user, TrackingEvent.USER_LOGGED_IN, user)
-    else:
-        set_warning(message="User logged-in but doesn't have cookie set.", user_id = user.id)
-
-
-user_logged_in.connect(register_user_logged_in)
-
-def register_user_logged_out(sender, request, user, **kwargs):
-    """
-    A signal receiver which triggers USER_LOGGED_OUT
-    """
-    if 'tr_user' in request.COOKIES:
-        tracked_user = request.COOKIES[ 'tr_user' ]
-        register_event(TrackingEvent.USER_LOGGED_IN)
-    else:
-        set_warning(message="User logged-out but doesn't have cookie set.", user_id = user.id)
-
-user_logged_out.connect(register_user_logged_out)
 
 
 

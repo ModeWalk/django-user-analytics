@@ -11,7 +11,6 @@ HTTP_KEYS_TO_PRESERVE = [
     'HTTP_REFERER',
     'REQUEST_METHOD',
     'QUERY_STRING',
-    'TZ',
     'HTTP_HOST',
     'PATH_INFO',
     'HTTP_USER_AGENT',
@@ -34,6 +33,8 @@ def massage_request(request):
     for key in HTTP_KEYS_TO_PRESERVE:
         if request_meta.has_key(key):
             result[key] = request_meta[key]
+
+    print request.raw_post_data
 
     result['ANALYTICS_IS_SECURE'] = request.is_secure()
 

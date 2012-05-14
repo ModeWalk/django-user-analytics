@@ -1,7 +1,6 @@
 from celery.task import task, periodic_task
 from celery.schedules import crontab
 from django.contrib.auth.models import User
-from models import TrackingEvent
 import logging
 logger = logging.getLogger(__name__)
 
@@ -30,13 +29,13 @@ def async_process_event(**kwargs):
     tracking_event = kwargs['tracking_event']
 
     if (kwargs['force_write'] == True):
-        print 'Registering event ' + TrackingEvent.reverse(tracking_event)
+        #print 'Registering event ' + TrackingEvent.reverse(tracking_event)
         #TODO: Write to db code
         return
 
 
     #TODO: analyze URL
-    print 'Analyzing event ' + TrackingEvent.reverse(tracking_event)
+    #print 'Analyzing event ' + TrackingEvent.reverse(tracking_event)
     print kwargs['request']
 
 
