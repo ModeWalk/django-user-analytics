@@ -34,33 +34,6 @@ def massage_request(request):
         if request_meta.has_key(key):
             result[key] = request_meta[key]
 
-    print request.raw_post_data
-
     result['ANALYTICS_IS_SECURE'] = request.is_secure()
 
-
-class TwoWayDic(dict):
-    '''
-    Very basic TwoWayDic. Only valid during construction
-
-    Usage:
-
-    x = TwoWayDic({'A' : 2, 'B' : 3, 'C': 4})
-    print x.A
-    > 2
-    print x.reverse[3]
-    > 'B'
-    print x['C']
-    > 4
-    '''
-    reverse = None
-
-    def __getattr__(self, name):
-        '''Allows calling TwoWayDic.key'''
-        if name in self:
-            return self[name]
-        raise AttributeError
-
-    def __init__(self, data):
-        self.reverse = dict(reversed(item) for item in data.items())
-        super(TwoWayDic, self).__init__(data)
+    return result
