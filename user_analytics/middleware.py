@@ -14,7 +14,7 @@ class UserTrackingMiddleware(object):
 
             tracked_user = None
 
-            if not request.COOKIES.has_key( 'yb_user' ):
+            if 'yb_user' in request.COOKIES:
 
                 tracked_user = generate_new_tracking_key()
 
