@@ -24,15 +24,32 @@ def async_set_warning(**kwargs):
 @task(name='user_analytics.register_event')
 def async_register_event(**kwargs):
 
+    #Do some filtering before we write to the db.
+
+    event_name = kwargs.get('event_name', 'UNDEFINED')
+    event_time = kwargs.get('event_time', None)
+    cookie = kwargs.get('cookie', None)
+    raw_request = kwargs.get('request', None)
+
+
+    # skip favico.ico requests. This case only happens if we are in debug mode
+    # and we are serving favicon.ico file using the debug server (since there is no
+    # nginx or apache directive that would proxy that to a static file instead
+
+    if kwargs['event_name'] == 'PAGE_VISITED':
+        if raw_request is not None:
+            if '/favicon.ico' in raw_request['PATH_INFO']:
+                return
+
+    raw_request_json = simplejson.dumps(raw_request)
 
     try:
         tracking_event = RawTrackingEvent()
 
-        tracking_event.event_time = kwargs['event_time']
-        tracking_event.name = kwargs['event_name']
-        tracking_event.cookie = kwargs['cookie']
-
-        tracking_event.raw_request = simplejson.dumps(kwargs['request'])
+        tracking_event.event_time = event_time
+        tracking_event.name = event_name
+        tracking_event.cookie = cookie
+        tracking_event.raw_request = raw_request_json
 
         tracking_event.save()
 
