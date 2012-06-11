@@ -1,6 +1,5 @@
 from tracking import generate_new_tracking_key, register_event
 
-
 class UserTrackingMiddleware(object):
 
     def process_request(self, request):
