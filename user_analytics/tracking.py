@@ -4,10 +4,24 @@ from tasks import async_set_warning, async_register_event
 from utils import massage_request
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 
+import django
+if django.get_version() < '1.4':
+    from user_analytics.backported.signing import Signer, BadSignature
+else:
+    from django.core.signing import Signer, BadSignature
+
+signer = Signer()
 
 def generate_new_tracking_key():
     tracking_key = str(uuid.uuid1()).replace('-','')
-    return tracking_key
+    return signer.sign(tracking_key)
+
+def verify_tracking_key(key):
+    try:
+        value = signer.unsign(key)
+        return value
+    except  BadSignature:
+        return None
 
 
 def register_event(tracking_id=None, event_name=None, request=None):

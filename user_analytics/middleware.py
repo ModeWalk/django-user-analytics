@@ -1,5 +1,6 @@
 from tracking import generate_new_tracking_key, register_event
 
+
 class UserTrackingMiddleware(object):
 
     def process_request(self, request):
@@ -14,7 +15,7 @@ class UserTrackingMiddleware(object):
 
             tracked_user = None
 
-            if 'yb_user' in request.COOKIES:
+            if 'yb_user' not in request.COOKIES:
 
                 tracked_user = generate_new_tracking_key()
 
