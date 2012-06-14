@@ -13,6 +13,7 @@ class RawTrackingEvent(models.Model):
     event_time = models.DateTimeField(blank=False)
     cookie = models.CharField(max_length=32)
     raw_request = models.TextField()
+    event_data = models.TextField(null=True, blank=True)
 
 
 #remote_address = models.IPAddressField()

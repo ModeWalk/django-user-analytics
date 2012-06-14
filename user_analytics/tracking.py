@@ -24,12 +24,13 @@ def verify_tracking_key(key):
         return None
 
 
-def register_event(tracking_id=None, event_name=None, request=None):
+def register_event(tracking_id=None, event_name=None, request=None, event_data=None):
 
     params = {
         'cookie' : tracking_id,
         'event_time' : datetime.now(),
         'event_name' : event_name,
+        'event_data' : event_data,
         }
 
     if not request is None:

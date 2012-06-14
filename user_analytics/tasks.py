@@ -37,6 +37,7 @@ def async_register_event(**kwargs):
 
     event_name = kwargs.get('event_name', 'UNDEFINED')
     event_time = kwargs.get('event_time', None)
+    event_data = kwargs.get('event_data', None)
 
     raw_request = kwargs.get('request', None)
 
@@ -60,6 +61,7 @@ def async_register_event(**kwargs):
         tracking_event.name = event_name
         tracking_event.cookie = cookie
         tracking_event.raw_request = raw_request_json
+        tracking_event.data = event_data
 
         tracking_event.save()
 
