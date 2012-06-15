@@ -79,6 +79,6 @@ def register_user_logged_out(sender, request, user, **kwargs):
         cookie = request.COOKIES[ 'yb_user' ]
         register_event(tracking_id=cookie, event_name='USER_LOGGED_OUT', request=request)
     else:
-        set_warning(message="User logged-in but doesn't have cookie set.", user_id = user.id)
+        set_warning(message="User logged-out but doesn't have cookie set.", user_id = user.id)
 
 user_logged_out.connect(register_user_logged_out, dispatch_uid="USER_ANALYTICS_USER_LOGGED_OUT")
