@@ -53,6 +53,7 @@ def async_register_event(**kwargs):
                 return
 
     raw_request_json = simplejson.dumps(raw_request)
+    #event_data_json = simplejson.dumps(event_data)
 
     try:
         tracking_event = RawTrackingEvent()
@@ -61,7 +62,7 @@ def async_register_event(**kwargs):
         tracking_event.name = event_name
         tracking_event.cookie = cookie
         tracking_event.raw_request = raw_request_json
-        tracking_event.data = event_data
+        tracking_event.event_data = event_data
 
         tracking_event.save()
 
