@@ -5,8 +5,7 @@ from utils import massage_request
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.conf import settings
 
-if not USER_ANALYTICS_ENABLED:
-    return
+USER_ANALYTICS_ENABLED = getattr(settings, "USER_ANALYTICS_ENABLED", True)
 
 import django
 
