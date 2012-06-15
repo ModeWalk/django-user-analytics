@@ -3,8 +3,13 @@ import uuid
 from tasks import async_set_warning, async_register_event
 from utils import massage_request
 from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.conf import settings
+
+if not USER_ANALYTICS_ENABLED:
+    return
 
 import django
+
 if django.get_version() < '1.4':
     from user_analytics.backported.signing import Signer, BadSignature
 else:
@@ -26,6 +31,9 @@ def verify_tracking_key(key):
 
 def register_event(tracking_id=None, event_name=None, request=None, event_data=None):
 
+    if not USER_ANALYTICS_ENABLED:
+        return
+
     params = {
         'cookie' : tracking_id,
         'event_time' : datetime.now(),
@@ -40,6 +48,10 @@ def register_event(tracking_id=None, event_name=None, request=None, event_data=N
 
 
 def set_warning(message='', user_id=None):
+
+    if not USER_ANALYTICS_ENABLED:
+        return
+
     async_set_warning.apply_async(args=[], kwargs = {
         'message' : message,
         'user_id' : user_id,
