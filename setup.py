@@ -11,6 +11,14 @@ setup(
     author_email='ragi@burhum.com',
     url='https://github.com/RBURHUM/django-user-analytics',
     packages=find_packages(),
+
+    #package_dir = {'':'user_analytics'},   # tell distutils packages are under src
+
+    package_data = {
+        # If any package contains *.js files, include them:
+        '': ['*.js', '*.py']
+    },
+    include_package_data=True,
     keywords = ["analytics", "tracking", "dashboard"],
     install_requires = [
       'celery'
