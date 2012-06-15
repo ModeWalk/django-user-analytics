@@ -51,6 +51,8 @@ def async_register_event(**kwargs):
         if raw_request is not None:
             if '/favicon.ico' in raw_request['PATH_INFO']:
                 return
+            if '/admin' in raw_request['PATH_INFO']:
+                return
 
     raw_request_json = simplejson.dumps(raw_request)
     #event_data_json = simplejson.dumps(event_data)
