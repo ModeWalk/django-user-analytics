@@ -26,7 +26,7 @@ def async_register_event(**kwargs):
 
     original_cookie = kwargs.get('cookie', None)
 
-    #check that they cookie has not been tampered with
+    #check that the cookie has not been tampered with
     from tracking import verify_tracking_key
     cookie = verify_tracking_key(original_cookie)
     if cookie is None:

@@ -4,6 +4,7 @@ from tasks import async_set_warning, async_register_event
 from utils import massage_request
 from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.conf import settings
+from django.utils import simplejson
 
 USER_ANALYTICS_ENABLED = getattr(settings, "USER_ANALYTICS_ENABLED", True)
 
@@ -64,7 +65,14 @@ def register_user_logged_in(sender, request, user, **kwargs):
 
     if 'yb_user' in request.COOKIES:
         cookie = request.COOKIES[ 'yb_user' ]
-        register_event(tracking_id=cookie, event_name='USER_LOGGED_IN', request=request)
+
+        event_data = {
+            'user_id' : user.id
+        }
+
+        data = simplejson.dumps(event_data)
+
+        register_event(tracking_id=cookie, event_name='USER_LOGGED_IN', request=request, event_data=data)
     else:
         set_warning(message="User logged-in but doesn't have cookie set.", user_id = user.id)
 
@@ -76,8 +84,15 @@ def register_user_logged_out(sender, request, user, **kwargs):
     """
     if 'yb_user' in request.COOKIES:
         cookie = request.COOKIES[ 'yb_user' ]
-        register_event(tracking_id=cookie, event_name='USER_LOGGED_OUT', request=request)
+
+        event_data = {
+            'user_id' : user.id
+        }
+
+        data = simplejson.dumps(event_data)
+
+        register_event(tracking_id=cookie, event_name='USER_LOGGED_OUT', request=request, event_data=data)
     else:
-        set_warning(message="User logged-out but doesn't have cookie set.", user_id = user.id)
+        set_warning(message="User logged-out but doesn't have cookie set.", user_id= user.id)
 
 user_logged_out.connect(register_user_logged_out, dispatch_uid="USER_ANALYTICS_USER_LOGGED_OUT")
