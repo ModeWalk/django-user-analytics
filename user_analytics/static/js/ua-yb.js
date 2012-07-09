@@ -11,9 +11,14 @@
 
 /* send csr token when using jquery post */
 
+/*
+This breaks IE 7 & 8 if the admin init js script is not included on the page, even if jquery is already running on the page.
+Disable it for now.
+
 if (!$)
     var $ = django.jQuery;
-
+*/
+	
 $('html').ajaxSend(function(event, xhr, settings) {
     function getCookie(name) {
         var cookieValue = null;
