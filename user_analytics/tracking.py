@@ -82,6 +82,9 @@ def register_user_logged_out(sender, request, user, **kwargs):
     """
     A signal receiver which triggers USER_LOGGED_OUT
     """
+    if user is None:
+        return
+        
     if 'yb_user' in request.COOKIES:
         cookie = request.COOKIES[ 'yb_user' ]
 
