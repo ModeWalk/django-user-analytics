@@ -5,7 +5,7 @@ from setuptools import find_packages
 
 setup(
     name='django-user-analytics',
-    version='0.0.1',
+    version='0.0.2',
     description='A simple way to track (client or server) user-level events asynchronously',
     author='Ragi Burhum',
     author_email='ragi@burhum.com',
